@@ -98,6 +98,9 @@ App.setCanvas = function() {
     // Ants target
     App.antsTarget = null;
 
+    // Set score
+    App.score = 0;
+
     // Add event listener
     App.stage.addEventListener('click', App.clickFunction);
 
@@ -115,6 +118,7 @@ App.clickFunction = function(event) {
                 y > App.ants[i].position.y &&
                 y <= App.ants[i].position.y + ACTUAL_HEIGHT
             ){
+                App.score += App.Ant.points;
                 App.ants.splice(i, 1);
                 break;
             }
@@ -144,7 +148,7 @@ App.update = function() {
     // Spawn Ants
     if(!App.spawningAnt) {
          App.spawningAnt = true;
-         setTimeout(App.spawnAnt, 2000);
+         setTimeout(App.spawnAnt, SPAWN_TIME_TWO);
     }
 
     if(App.ants.length) {
@@ -152,6 +156,10 @@ App.update = function() {
             App.ants[i] = App.drawAnt(App.ants[i]);
         }
     }
+
+    // Update Score
+    App.ctx.fillStyle = "white";
+    App.ctx.fillText(App.score, 30, 30);
 }
 
 /**
@@ -216,7 +224,7 @@ App.spawnFood = function(count) {
     for(var i = 0; i < count; i++) {
         var food = new App.Food();
         food.position.x = 32 + (Math.random() * (App.stage.width - 64));
-        food.position.y = 32 + (Math.random() * (App.stage.height - 64));
+        food.position.y = 80 + (Math.random() * (App.stage.height - 145));
 
         App.food.push(food);
     }
@@ -229,23 +237,6 @@ App.spawnFood = function(count) {
  */
 App.drawFood = function(object) {
     App.ctx.drawImage(object.image, object.position.x, object.position.y);
-}
-
-/**
- * Sort the Food by y coordinates
- */
-App.sortFood = function(object) {
-    for(var i = 0; i < App.food.length; i++) {
-        for(var j = 0; j < (App.food.length - 1); j++) {
-
-            if(App.food[j].position.y > App.food[j+1].position.y) {
-
-                var hold = App.food[j];
-                App.food[j] = App.food[j+1];
-                App.food[j+1] = hold;
-            }
-        }
-    }
 }
 
 /**
@@ -335,4 +326,3 @@ App.collisionDetection = function(object) {
         App.antsTarget = null;
     }
 }
-

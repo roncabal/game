@@ -43,21 +43,21 @@ var redImage = new Image();
 redImage.onload = function () {
 	redReady = true;
 };
-redImage.src = "groudon.png";
+redImage.src = RED_ANT;
 
 var orangeReady = false;
 var orangeImage = new Image();
 orangeImage.onload = function () {
 	orangeReady = true;
 };
-orangeImage.src = "other.png";
+orangeImage.src = ORANGE_ANT;
 
 var blackReady = false;
 var blackImage = new Image();
 blackImage.onload = function () {
 	blackReady = true;
 };
-blackImage.src = "red.png";
+blackImage.src = BLACK_ANT;
 
 //Game Objects
 

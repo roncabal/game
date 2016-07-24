@@ -5,7 +5,6 @@ window.App = window.App || {};
  */
 App.init = function() {
     App.setup();
-    console.log(App.browser);
 }
 
 /**
@@ -86,7 +85,6 @@ App.setCanvas = function() {
     }
 
     App.orangeAntImg.src = ORANGE_ANT;
-    console.log(App.orangeAntImgReady);
 
     // Black Ant
     App.blackAntImgReady = false;
@@ -99,6 +97,29 @@ App.setCanvas = function() {
 
     // Ants target
     App.antsTarget = null;
+
+    // Add event listener
+    App.stage.addEventListener('click', App.clickFunction);
+
+}
+
+App.clickFunction = function(event) {
+    var x = event.offsetX,
+        y = event.offsetY;
+
+    if(App.ants !== null) {
+        for(var i = 0; i < App.ants.length; i++) {
+            if(
+                x > App.ants[i].position.x &&
+                x < App.ants[i].position.x + ACTUAL_WIDTH &&
+                y > App.ants[i].position.y &&
+                y <= App.ants[i].position.y + ACTUAL_HEIGHT
+            ){
+                App.ants.splice(i, 1);
+                break;
+            }
+        }
+    }
 }
 
 /**
@@ -153,6 +174,7 @@ App.spawnAnt = function() {
     var rand = Math.random() * 100;
     var ant = new App.Ant();
 
+    // Choose Ant Type
     if(rand < RED_P) {
         ant.image = App.redAntImg;
         ant.speed = RED_SPEED;
@@ -167,13 +189,18 @@ App.spawnAnt = function() {
         ant.points = 3;
     }
 
-    ant.position.x = 50;
+    // Ant's initial position
+    ant.position.x = Math.random() * App.stage.width;
     ant.position.y = -10;
 
+    // Add the new instance to the array
     App.ants.push(ant);
     App.spawningAnt = false;
 }
 
+/**
+ * Food Class
+ */
 App.Food = function(){
     this.image = App.foodImg;
     this.position = {
@@ -182,6 +209,9 @@ App.Food = function(){
     };
 };
 
+/**
+ * Spawn food
+ */
 App.spawnFood = function(count) {
     for(var i = 0; i < count; i++) {
         var food = new App.Food();
@@ -218,46 +248,91 @@ App.sortFood = function(object) {
     }
 }
 
+/**
+ * Draw Ant
+ */
 App.drawAnt = function(object) {
     App.ctx.drawImage(object.image, object.position.x, object.position.y);
+
+    // Collision Detection
+    if(App.antsTarget !== null) {
+        App.collisionDetection(object);
+    }
 
     // Choose the food
     if(App.antsTarget === null && App.food.length) {
         var nearest = 0;
-        if(App.food.length > 2) {
+        if(App.food.length >= 2) {
             for(var i = 1; i < App.food.length; i++) {
-                var distanceFromNearest = object.position.y - App.food[nearest];
-                var distanceFromCurrent = object.position.y - App.food[i];
+                var distanceFromNearest = object.position.y - App.food[nearest].position.y;
+                var distanceFromCurrent = object.position.y - App.food[i].position.y;
 
                 if(Math.abs(distanceFromNearest) > Math.abs(distanceFromCurrent)) {
                     nearest = i;
                 }
             }
 
-            App.antsTarget = nearest;
         }
+        App.antsTarget = nearest;
     }
 
     // Chase the food
-    var speed = object.speed;
-    if(App.antsTarget !== null) {
-        var distance = object.position.x - App.food[App.antsTarget].position.x;
-        console.log(distance);
-        if(distance < 0 && object.speed <= 0) {
-            speed *= -1;
-            console.log('test1');
-        } else if(distance > 0 && object.speed >= 0){
-            speed *= -1;
-            console.log('test2');
-        } else if(distance == 0 && object.speed !== 0) {
-            speed = 0;
-            console.log('test');
-        }
-    }
+    var speed = App.determineSpeed(object);
 
     // Object position
-    object.position.x += speed;
-    object.position.y += object.speed;
+    object.position.x += speed.x;
+    object.position.y += speed.y;
 
     return object;
 }
+
+/**
+ * Determine the speed of the ant
+ */
+App.determineSpeed = function(object) {
+    var speed = {
+        x : object.speed,
+        y : object.speed
+    };
+    if(App.antsTarget !== null) {
+        var distanceX = object.position.x - App.food[App.antsTarget].position.x;
+        var distanceY = object.position.y - App.food[App.antsTarget].position.y;
+
+        // Determine X speed
+        if(distanceX < 0 && object.speed <= 0) {
+            speed.x *= -1;
+        } else if(distanceX > 0 && object.speed >= 0){
+            speed.x *= -1;
+        } else if(distanceX == 0 && object.speed !== 0) {
+            speed.x = 0;
+        }
+
+        // Determine Y speed
+        if(distanceY < 0 && object.speed <= 0) {
+            speed.y *= -1;
+        } else if(distanceY > 0 && object.speed >= 0){
+            speed.y *= -1;
+        } else if(distanceY == 0 && object.speed !== 0) {
+            speed.y = 0;
+        }
+
+    }
+
+    return speed;
+}
+
+/**
+ * Collision Detection
+ */
+App.collisionDetection = function(object) {
+    if (object.position.x < App.food[App.antsTarget].position.x + BOX_WIDTH &&
+       object.position.x + BOX_WIDTH > App.food[App.antsTarget].position.x &&
+       object.position.y < App.food[App.antsTarget].position.y + BOX_HEIGHT &&
+       BOX_HEIGHT + object.position.y > App.food[App.antsTarget].position.y) {
+
+        // collision detected!
+        App.food.splice(App.antsTarget, 1);
+        App.antsTarget = null;
+    }
+}
+

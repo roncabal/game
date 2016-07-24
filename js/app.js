@@ -185,8 +185,8 @@ App.Food = function(){
 App.spawnFood = function(count) {
     for(var i = 0; i < count; i++) {
         var food = new App.Food();
-        food.position.x = 100 + (100 * i);
-        food.position.y = 300;
+        food.position.x = 32 + (Math.random() * (App.stage.width - 64));
+        food.position.y = 32 + (Math.random() * (App.stage.height - 64));
 
         App.food.push(food);
     }
@@ -199,6 +199,23 @@ App.spawnFood = function(count) {
  */
 App.drawFood = function(object) {
     App.ctx.drawImage(object.image, object.position.x, object.position.y);
+}
+
+/**
+ * Sort the Food by y coordinates
+ */
+App.sortFood = function(object) {
+    for(var i = 0; i < App.food.length; i++) {
+        for(var j = 0; j < (App.food.length - 1); j++) {
+
+            if(App.food[j].position.y > App.food[j+1].position.y) {
+
+                var hold = App.food[j];
+                App.food[j] = App.food[j+1];
+                App.food[j+1] = hold;
+            }
+        }
+    }
 }
 
 App.drawAnt = function(object) {

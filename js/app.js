@@ -145,7 +145,7 @@ App.update = function() {
         }
     } else {
         App.ctx.fillStyle = "white";
-        App.ctx.fillText("GAME OVER", 300, 200);
+        App.ctx.fillText("GAME OVER", 230, 200);
         clearInterval(App.game);
     }
 
@@ -329,4 +329,3 @@ App.collisionDetection = function(object) {
         App.antsTarget = null;
     }
 }
-

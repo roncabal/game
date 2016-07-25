@@ -48,11 +48,17 @@ App.setCanvas = function() {
     App.stage = document.getElementById("gameCanvas");
     App.stage.width = STAGE_WIDTH;
     App.stage.height = STAGE_HEIGHT;
-    App.bgimg = BG_IMG;
 
     App.ctx = App.stage.getContext("2d");
     App.ctx.fillStyle = "grey";
     App.ctx.font = GAME_FONTS;
+
+    App.bgimgReady = false;
+    App.bgimg = new Image();
+    App.bgimg.onload = function() {
+        App.bgimgReady = true;
+    };
+    App.bgimg.src = BG_IMG;
 
     // Food settings
     App.food = [];
@@ -136,8 +142,7 @@ App.clickFunction = function(event) {
  */
 App.update = function() {
     //Clear Canvas
-    App.ctx.fillStyle = "grey";
-    App.ctx.fillRect(0, 0, App.stage.width , App.stage.height);
+    App.ctx.drawImage(App.bgimg, 0, 0);
 
     // Spawning of food
     if(!App.foodSpawned){

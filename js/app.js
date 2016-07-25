@@ -101,6 +101,10 @@ App.setCanvas = function() {
     // Score
     App.score = 0;
 
+    // Spawn Interval
+    App.spawnInter = 0;
+    App.spawningTime = null;
+
     // Add event listener
     App.stage.addEventListener('click', App.clickFunction);
 
@@ -147,13 +151,24 @@ App.update = function() {
         App.ctx.fillStyle = "white";
         App.ctx.fillText("GAME OVER", 230, 200);
         clearInterval(App.game);
-        
     }
 
     // Spawn Ants
     if(!App.spawningAnt) {
          App.spawningAnt = true;
-         setTimeout(App.spawnAnt, 2000);
+         App.spawnInter = (Math.random() * 2) + 1;
+         if(App.spawnInter == 1) {
+            App.spawnInter * 1000;
+         }
+         
+         if(App.spawnInter == 2) {
+            App.spawnInter * 2000;
+         }
+         
+         if(App.spawnInter == 3) {
+            App.spawnInter * 3000;
+         }
+         setTimeout(App.spawnAnt, App.spawnInter);
     }
 
     if(App.ants.length) {

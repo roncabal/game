@@ -147,6 +147,7 @@ App.update = function() {
         App.ctx.fillStyle = "white";
         App.ctx.fillText("GAME OVER", 230, 200);
         clearInterval(App.game);
+        
     }
 
     // Spawn Ants

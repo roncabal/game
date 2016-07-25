@@ -98,6 +98,9 @@ App.setCanvas = function() {
     // Ants target
     App.antsTarget = null;
 
+    // Score
+    App.score = 0;
+
     // Add event listener
     App.stage.addEventListener('click', App.clickFunction);
 
@@ -115,12 +118,14 @@ App.clickFunction = function(event) {
                 y > App.ants[i].position.y &&
                 y <= App.ants[i].position.y + ACTUAL_HEIGHT
             ){
+                App.score += App.Ant.points;
                 App.ants.splice(i, 1);
                 break;
             }
         }
     }
 }
+console.log(App.score);
 
 /**
  * Redraw the canvas
@@ -152,6 +157,10 @@ App.update = function() {
             App.ants[i] = App.drawAnt(App.ants[i]);
         }
     }
+
+    // Update Score
+    App.ctx.fillStyle = "white";
+    App.ctx.fillText(App.score, 30, 30);
 }
 
 /**
@@ -216,7 +225,7 @@ App.spawnFood = function(count) {
     for(var i = 0; i < count; i++) {
         var food = new App.Food();
         food.position.x = 32 + (Math.random() * (App.stage.width - 64));
-        food.position.y = 32 + (Math.random() * (App.stage.height - 64));
+        food.position.y = 80 + (Math.random() * (App.stage.height - 145));
 
         App.food.push(food);
     }

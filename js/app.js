@@ -143,11 +143,6 @@ App.update = function() {
         for(var i = 0; i < App.food.length; i++) {
             App.drawFood(App.food[i]);
         }
-
-        if(App.food.length == 0) {
-            App.ctx.fillStyle = "white";
-            App.ctx.fillText("GAME OVER", 300, 200);
-        }
     }
 
     // Spawn Ants
@@ -329,5 +324,10 @@ App.collisionDetection = function(object) {
         App.food.splice(App.antsTarget, 1);
         App.antsTarget = null;
     }
-}
 
+    if(App.food.length == 0) {
+        clearTimeout(App.game);
+        App.ctx.fillStyle = "white";
+        App.ctx.fillText("GAME OVER", 300, 200);
+    }
+}

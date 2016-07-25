@@ -143,11 +143,10 @@ App.update = function() {
         for(var i = 0; i < App.food.length; i++) {
             App.drawFood(App.food[i]);
         }
-
-        if(App.food.length == 0) {
-            App.ctx.fillStyle = "white";
-            App.ctx.fillText("GAME OVER", 300, 200);
-        }
+    } else {
+        App.ctx.fillStyle = "white";
+        App.ctx.fillText("GAME OVER", 300, 200);
+        clearInterval(App.game);
     }
 
     // Spawn Ants

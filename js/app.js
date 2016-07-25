@@ -118,14 +118,13 @@ App.clickFunction = function(event) {
                 y > App.ants[i].position.y &&
                 y <= App.ants[i].position.y + ACTUAL_HEIGHT
             ){
-                App.score += App.Ant.points;
+                App.score += App.ants[i].points;
                 App.ants.splice(i, 1);
                 break;
             }
         }
     }
 }
-console.log(App.score);
 
 /**
  * Redraw the canvas
@@ -143,6 +142,11 @@ App.update = function() {
     if(App.food.length) {
         for(var i = 0; i < App.food.length; i++) {
             App.drawFood(App.food[i]);
+        }
+
+        if(App.food.length == 0) {
+            App.ctx.fillStyle = "white";
+            App.ctx.fillText("GAME OVER", 300, 200);
         }
     }
 
@@ -241,23 +245,6 @@ App.drawFood = function(object) {
 }
 
 /**
- * Sort the Food by y coordinates
- */
-App.sortFood = function(object) {
-    for(var i = 0; i < App.food.length; i++) {
-        for(var j = 0; j < (App.food.length - 1); j++) {
-
-            if(App.food[j].position.y > App.food[j+1].position.y) {
-
-                var hold = App.food[j];
-                App.food[j] = App.food[j+1];
-                App.food[j+1] = hold;
-            }
-        }
-    }
-}
-
-/**
  * Draw Ant
  */
 App.drawAnt = function(object) {
@@ -280,7 +267,6 @@ App.drawAnt = function(object) {
                     nearest = i;
                 }
             }
-
         }
         App.antsTarget = nearest;
     }

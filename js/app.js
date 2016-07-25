@@ -48,6 +48,7 @@ App.setCanvas = function() {
     App.stage = document.getElementById("gameCanvas");
     App.stage.width = STAGE_WIDTH;
     App.stage.height = STAGE_HEIGHT;
+    App.bgimg = BG_IMG;
 
     App.ctx = App.stage.getContext("2d");
     App.ctx.fillStyle = "grey";

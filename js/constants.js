@@ -12,21 +12,17 @@ BOX_HEIGHT = 32,
 ACTUAL_WIDTH = 40,
 ACTUAL_HEIGHT = 40;
 
-var SPAWN_TIME = 1000,
-SPAWN_TIME_TWO = 2000,
-SPAWN_TIME_THREE = 3000,
-RED_SPEED = 2,
+var RED_SPEED = 2,
 ORANGE_SPEED = 2.27,
 BLACK_SPEED = 4.54;
 
-var GAME_OVER = "GAME OVER";
-
 //Images
 var IMAGE_FOLDER = "images/";
-var RED_ANT = IMAGE_FOLDER + "groudon.png";
-var ORANGE_ANT = IMAGE_FOLDER + "other.png";
-var BLACK_ANT = IMAGE_FOLDER + "red.png";
-var FOOD_IMG  = IMAGE_FOLDER + "red.png";
+var RED_ANT = IMAGE_FOLDER + "redant.png";
+var ORANGE_ANT = IMAGE_FOLDER + "orangeant.png";
+var BLACK_ANT = IMAGE_FOLDER + "blackant.png";
+var FOOD_IMG  = IMAGE_FOLDER + "food.png";
+var BG_IMG = IMAGE_FOLDER + "tablebg.png";
 
 // Probability
 var RED_P = 87;

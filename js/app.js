@@ -156,18 +156,10 @@ App.update = function() {
     // Spawn Ants
     if(!App.spawningAnt) {
          App.spawningAnt = true;
-         App.spawnInter = (Math.random() * 2) + 1;
-         if(App.spawnInter == 1) {
-            App.spawnInter * 1000;
-         }
-         
-         if(App.spawnInter == 2) {
-            App.spawnInter * 2000;
-         }
-         
-         if(App.spawnInter == 3) {
-            App.spawnInter * 3000;
-         }
+
+         // Floor (Random 1-3) * 1000 = Timeout millis
+         App.spawnInter = Math.floor((Math.random() * 3) + 1) * 1000;
+
          setTimeout(App.spawnAnt, App.spawnInter);
     }
 
